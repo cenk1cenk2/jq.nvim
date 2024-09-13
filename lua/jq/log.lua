@@ -34,7 +34,7 @@ local M = {
 ---@type jq.LoggerConfig
 M.config = {
   level = vim.log.levels.INFO,
-  plugin = "schema-companion.nvim",
+  plugin = "jq.nvim",
   modes = {
     { name = "trace", level = vim.log.levels.TRACE },
     { name = "debug", level = vim.log.levels.DEBUG },

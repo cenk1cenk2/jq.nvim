@@ -1,12 +1,12 @@
 local M = {}
 
-local log = require("jq.log")
-
 ---@param config jq.Config
 function M.setup(config)
-  log.setup()
-  local c = require("youtrack.setup").setup(config)
-  lib.setup(c)
+  local c = require("jq.config").setup(config)
+
+  local log = require("jq.log").setup({ level = c.log_level })
+
+  log.debug("Configuration complete.")
 end
 
 return M
