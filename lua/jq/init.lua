@@ -6,7 +6,7 @@ function M.setup(config)
 
   local log = require("jq.log").setup({ level = c.log_level })
 
-  log.debug("Configuration complete.")
+  log.debug("Plugin has been setup: %s", c)
 end
 
 return M
