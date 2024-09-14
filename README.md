@@ -48,6 +48,8 @@ You can find the default configuration file and available options [here](https:/
 
 This plugin only exposes one interface that toggles to UI.
 
+All the following options are **optional**.
+
 ```lua
 require("jq").run({
   --- you can pass additional options to configure the current instance
@@ -56,9 +58,16 @@ require("jq").run({
   -- commands for the instance else it will use the default
   -- the default command would be the first one in the table
   commands = {
-    { command = "jq", filetype = "json" },
+    {
+      -- command to be run
+      command = "jq",
+      -- filetype of the output
+      filetype = "json",
+      -- hidden arguments that will not be shown in the ui
+      arguments = "-r"
+    },
   },
-  -- hidden arguments that will be not shown in the UI
+  -- arguments to start with in the ui
   arguments = "",
   -- query to start with, if not provided it will use the default
   query = ".",
