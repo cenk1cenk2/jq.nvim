@@ -95,4 +95,22 @@ function M.get_project_buffer_filepath(bufnr)
   return require("plenary.path").new(vim.api.nvim_buf_get_name(bufnr or 0)):make_relative()
 end
 
+---@param renderer any
+function M.attach_autoclose(renderer)
+  local popups = renderer._private.flatten_tree
+  for _, popup in pairs(popups) do
+    popup:on("BufLeave", function()
+      vim.schedule(function()
+        local bufnr = vim.api.nvim_get_current_buf()
+        for _, p in pairs(popups) do
+          if p.bufnr == bufnr then
+            return
+          end
+        end
+        renderer:close()
+      end)
+    end)
+  end
+end
+
 return M

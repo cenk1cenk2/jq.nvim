@@ -2,9 +2,10 @@ local M = {}
 
 ---@class jq.Config
 ---@field log_level? number
+---@field autoclose? boolean
+---@field debounce? number
 ---@field commands? jq.ConfigCommand[]
 ---@field ui? jq.ConfigUi
----@field debounce? number
 
 ---@class jq.ConfigCommand
 ---@field command string Command to run.
@@ -31,6 +32,7 @@ local M = {}
 ---@type jq.Config
 local defaults = {
   log_level = vim.log.levels.INFO,
+  autoclose = true,
   debounce = 25,
   commands = {
     { command = "jq", filetype = "json" },
