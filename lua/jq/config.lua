@@ -17,8 +17,8 @@ local M = {}
 ---@field keymap? jq.ConfigUIKeymap
 
 ---@class jq.ConfigUiSize
----@field width? number
----@field height? number
+---@field width? number | fun(columns: number): number
+---@field height? number | fun(lines: number): number
 
 ---@class jq.ConfigUIKeymap
 ---@field close? string
@@ -63,26 +63,10 @@ function M.read()
   return M.options or defaults
 end
 
----Calculate the size of the UI.
----@param size jq.ConfigUiSize
----@return jq.ConfigUiSize
-local function calculate_size(size)
-  if size.width and size.width <= 1 and size.width > 0 then
-    size.width = math.floor(vim.o.columns * size.width)
-  end
-  if size.height and size.height <= 1 and size.height > 0 then
-    size.height = math.floor(vim.o.lines * size.height)
-  end
-
-  return size
-end
-
 ---@param config jq.Config
 ---@return jq.Config
 function M.setup(config)
   M.options = vim.tbl_deep_extend("force", {}, defaults, config or {})
-
-  calculate_size(M.options.ui)
 
   return M.options
 end

@@ -27,7 +27,7 @@ function M.run(opts)
     return
   end
 
-  local renderer = n.create_renderer(vim.tbl_deep_extend("force", {}, c.ui, {
+  local renderer = n.create_renderer(vim.tbl_deep_extend("force", {}, c.ui, utils.renderer_calculate_size(c.ui), {
     position = "50%",
     relative = "editor",
   }))

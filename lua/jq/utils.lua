@@ -115,4 +115,26 @@ function M.attach_autoclose(renderer)
   end
 end
 
+---Calculate the size of the UI.
+---@param size jq.ConfigUiSize
+---@return jq.ConfigUiSize
+function M.renderer_calculate_size(size)
+  ---@type jq.ConfigUiSize
+  local result = {}
+
+  if type(size.width) == "number" and size.width <= 1 and size.width > 0 then
+    result.width = math.floor(vim.o.columns * size.width)
+  elseif type(size.width) == "function" then
+    result.width = size.width(vim.o.columns)
+  end
+
+  if type(size.height) == "number" and size.height <= 1 and size.height > 0 then
+    result.height = math.floor(vim.o.lines * size.height)
+  elseif type(size.height) == "function" then
+    result.height = size.height(vim.o.rows)
+  end
+
+  return result
+end
+
 return M
