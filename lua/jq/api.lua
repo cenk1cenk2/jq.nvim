@@ -11,6 +11,8 @@ local utils = require("jq.utils")
 ---@field commands? jq.ConfigCommand[]
 ---@field arguments? string
 ---@field query? string
+---@field filename? string
+---@field lines? string[]
 
 ---@type fun(opts?: jq.RunOpts): nil
 function M.run(opts)
@@ -49,6 +51,8 @@ function M.run(opts)
   end)
 
   local bufnr = vim.api.nvim_get_current_buf()
+  local lines = opts.lines or vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  local filename = opts.filename or utils.get_project_buffer_filepath(bufnr)
 
   ---@type jq.ConfigCommand[]
   local commands = opts.commands or c.commands
@@ -84,7 +88,7 @@ function M.run(opts)
         border_label = "File",
         border_style = c.ui.border,
         is_focusable = false,
-        lines = utils.get_project_buffer_filepath(bufnr),
+        lines = filename and filename ~= "" and filename or "[No File]",
       }),
       n.tree({
         flex = 1,
@@ -164,7 +168,7 @@ function M.run(opts)
         size = 1,
         max_lines = 1,
         flex = 1,
-        value = utils.get_project_buffer_filepath(bufnr),
+        value = filename,
         placeholder = "save to...",
         on_mount = function(component)
           utils.set_component_value(component)
@@ -286,8 +290,6 @@ function M.run(opts)
 
       return
     end
-
-    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 
     require("plenary.job")
       :new({

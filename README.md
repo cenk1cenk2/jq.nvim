@@ -73,6 +73,17 @@ require("jq").run({
 })
 ```
 
+### Feeding Lines
+
+The default behavior is to use the current buffer as a source, however you can also provide data manually.
+
+```lua
+require("jq").run({
+  filename = "test.json",
+  lines = { "lines", "i", "obtained", "from", "somewhere" }
+})
+```
+
 ## References
 
 The UI is only possible due to beautiful work done on [MunifTanjim/nui.nvim](https://github.com/MunifTanjim/nui.nvim) and [grapp-dev/nui-components.nvim](https://github.com/grapp-dev/nui-components.nvim).
