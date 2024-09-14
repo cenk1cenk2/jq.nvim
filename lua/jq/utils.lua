@@ -32,6 +32,24 @@ function M.set_component_value(component, value)
   return component
 end
 
+---@param bufnr integer
+---@return string[] | nil
+function M.get_buffer_content(bufnr)
+  local content = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+
+  if #content == 0 or (#content == 1 and content[1] == "") then
+    return nil
+  end
+
+  return content
+end
+
+---@param component any
+---@return string[] | nil
+function M.get_component_buffer_content(component)
+  return M.get_buffer_content(component.bufnr)
+end
+
 ---
 ---@param component any
 ---@param content string | string[]
@@ -61,24 +79,6 @@ function M.set_component_buffer_content(component, content)
   vim.api.nvim_set_option_value("modifiable", modifiable, { buf = component.bufnr })
 
   return component
-end
-
----@param component any
----@return string[]
-function M.get_component_buffer_content(component)
-  return vim.api.nvim_buf_get_lines(component.bufnr, 0, -1, false)
-end
-
----@param bufnr integer
----@return string[] | nil
-function M.get_buffer_content(bufnr)
-  local content = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-
-  if #content == 0 or (#content == 1 and content[1] == "") then
-    return nil
-  end
-
-  return content
 end
 
 --- Returns the buffer absolute file path.
