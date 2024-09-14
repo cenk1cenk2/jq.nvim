@@ -45,7 +45,7 @@ function M.run(opts)
   renderer:on_mount(function()
     M._.renderer = renderer
 
-    if c.autoclose then
+    if c.ui.autoclose then
       utils.attach_autoclose(renderer)
     end
   end)

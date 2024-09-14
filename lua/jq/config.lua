@@ -2,7 +2,6 @@ local M = {}
 
 ---@class jq.Config
 ---@field log_level? number
----@field autoclose? boolean
 ---@field debounce? number
 ---@field commands? jq.ConfigCommand[]
 ---@field ui? jq.ConfigUi
@@ -13,6 +12,7 @@ local M = {}
 ---@field arguments? string Hidden arguments for the command that would not be shown in the prompt.
 
 ---@class jq.ConfigUi: jq.ConfigUiSize
+---@field autoclose? boolean
 ---@field border? 'double' | 'none' | 'rounded' | 'shadow' | 'single' | 'solid'
 ---@field keymap? jq.ConfigUIKeymap
 
@@ -32,13 +32,13 @@ local M = {}
 ---@type jq.Config
 local defaults = {
   log_level = vim.log.levels.INFO,
-  autoclose = true,
   debounce = 25,
   commands = {
     { command = "jq", filetype = "json" },
     { command = "yq", filetype = "json" },
   },
   ui = {
+    autoclose = true,
     border = "single",
     width = 120,
     height = 36,
