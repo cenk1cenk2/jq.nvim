@@ -42,6 +42,8 @@ function M.run(opts)
     },
   })
 
+  local resize = utils.attach_resize(renderer, c.ui)
+
   renderer:on_mount(function()
     M._.renderer = renderer
 
@@ -52,6 +54,8 @@ function M.run(opts)
 
   renderer:on_unmount(function()
     M._.renderer = nil
+
+    pcall(vim.api.nvim_del_autocmd, resize)
   end)
 
   local bufnr = vim.api.nvim_get_current_buf()

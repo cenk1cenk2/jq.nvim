@@ -115,6 +115,21 @@ function M.attach_autoclose(renderer)
   end
 end
 
+---Attaches resize event to the renderer.
+---@param renderer any
+---@param size jq.ConfigUiSize
+---@return number
+function M.attach_resize(renderer, size)
+  local id = vim.api.nvim_create_autocmd({ "VimResized" }, {
+    desc = "Resizes to UI on resizing the window.",
+    callback = function()
+      renderer:set_size(M.renderer_calculate_size(size))
+    end,
+  })
+
+  return id
+end
+
 ---Calculate the size of the UI.
 ---@param size jq.ConfigUiSize
 ---@return jq.ConfigUiSize
@@ -125,18 +140,18 @@ function M.renderer_calculate_size(size)
   if type(size.width) == "number" and size.width <= 1 and size.width > 0 then
     result.width = math.floor(vim.o.columns * size.width)
   elseif type(size.width) == "function" then
-    local width = size.width(vim.o.columns)
-    if type(width) == "number" then
-      result.width = width
+    result.width = size.width(vim.o.columns)
+    if type(result.width) == "number" and result.width <= 1 and result.width > 0 then
+      result.width = M.renderer_calculate_size(result).width
     end
   end
 
   if type(size.height) == "number" and size.height <= 1 and size.height > 0 then
     result.height = math.floor(vim.o.lines * size.height)
   elseif type(size.height) == "function" then
-    local height = size.height(vim.o.lines)
-    if type(height) == "number" then
-      result.height = height
+    result.height = size.height(vim.o.lines)
+    if type(result.height) == "number" and result.height <= 1 and result.height > 0 then
+      result.height = M.renderer_calculate_size(result).height
     end
   end
 

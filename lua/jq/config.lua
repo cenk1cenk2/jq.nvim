@@ -17,8 +17,8 @@ local M = {}
 ---@field keymap? jq.ConfigUIKeymap
 
 ---@class jq.ConfigUiSize
----@field width? number | fun(columns: number): number
----@field height? number | fun(lines: number): number
+---@field width? number | (fun(columns: number): number)
+---@field height? number | (fun(lines: number): number)
 
 ---@class jq.ConfigUIKeymap
 ---@field close? string
@@ -40,8 +40,20 @@ local defaults = {
   ui = {
     autoclose = true,
     border = "single",
-    width = 120,
-    height = 36,
+    width = function(columns)
+      if columns < 120 then
+        return math.floor(columns * 0.8)
+      end
+
+      return 120
+    end,
+    height = function(lines)
+      if lines < 36 then
+        return math.floor(lines * 0.8)
+      end
+
+      return 36
+    end,
     keymap = {
       close = "<Esc>",
       focus_next = "<Tab>",
