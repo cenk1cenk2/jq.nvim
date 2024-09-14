@@ -151,24 +151,26 @@ function M.run(opts)
       border_style = c.ui.border,
       buf = utils.create_buffer(false, true),
     }),
-    n.text_input({
-      id = "save",
-      border_label = "Save",
-      border_style = c.ui.border,
-      autofocus = false,
-      autoresize = false,
-      size = 1,
-      max_lines = 1,
-      value = utils.get_buffer_filepath(bufnr),
-      placeholder = "save to...",
-      on_mount = function(component)
-        utils.set_component_value(component)
-      end,
-    }),
     n.columns(
       {
         flex = 0,
       },
+      n.text_input({
+        id = "save",
+        border_label = "Save",
+        border_style = c.ui.border,
+        autofocus = false,
+        autoresize = false,
+        size = 1,
+        max_lines = 1,
+        flex = 1,
+        value = utils.get_project_buffer_filepath(bufnr),
+        placeholder = "save to...",
+        on_mount = function(component)
+          utils.set_component_value(component)
+        end,
+      }),
+      n.gap(1),
       n.button({
         label = "Yank <C-y>",
         global_press_key = "<C-b>",
@@ -208,9 +210,31 @@ function M.run(opts)
             return
           end
 
+          local path
+          if require("plenary.path").new(filename):is_absolute() then
+            path = filename
+          else
+            local cwd, _, err = vim.uv.cwd()
+            if not cwd or err ~= nil then
+              log.error("Failed to get cwd: %s", err or {})
+
+              return
+            end
+
+            local p = require("plenary.path").new(cwd):joinpath(filename):absolute()
+
+            if not p then
+              log.error("Failed to get absolute path: %s", p)
+
+              return
+            end
+
+            path = p
+          end
+
           local lines = utils.get_component_buffer_content(component)
 
-          local fd, fd_open_err = vim.uv.fs_open(filename, "w", 660)
+          local fd, fd_open_err = vim.uv.fs_open(path, "w+", 660)
 
           if not fd or fd_open_err then
             log.error("Failed to open file: %s", fd_open_err)

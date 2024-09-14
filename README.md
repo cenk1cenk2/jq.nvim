@@ -20,7 +20,6 @@ Run `jq` and variants like `yq` or `gojq` in an interactive window in Neovim and
 ```lua
 {
   "cenk1cenk2/jq.nvim",
-  -- dir = "~/development/jq.nvim",
   dependencies = {
     -- https://github.com/nvim-lua/plenary.nvim
     "nvim-lua/plenary.nvim",
