@@ -53,13 +53,20 @@ function M.run(opts)
   ---@type jq.ConfigCommand[]
   local commands = opts.commands or c.commands
 
-  local signal = n.create_signal({
+  local defaults = {
     commands = vim.tbl_map(function(command)
       return n.node(command)
     end, commands),
     command = n.node(commands[1]),
     arguments = opts.arguments or "",
     query = opts.query or ".",
+  }
+
+  local signal = n.create_signal({
+    commands = defaults.commands,
+    command = defaults.command,
+    arguments = defaults.arguments,
+    query = defaults.query,
   })
 
   if M._.signal == nil then
@@ -210,6 +217,19 @@ function M.run(opts)
           end
 
           log.info("Saved results to file: %s", filename)
+        end,
+      }),
+      n.gap(1),
+      n.button({
+        label = "Reset <C-r>",
+        global_press_key = "<C-r>",
+        autofocus = false,
+        border_style = c.ui.border,
+        on_press = function()
+          signal.commands = defaults.commands
+          signal.command = defaults.command
+          signal.arguments = defaults.arguments
+          signal.query = defaults.query
         end,
       }),
       n.gap(1),
