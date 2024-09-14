@@ -125,13 +125,19 @@ function M.renderer_calculate_size(size)
   if type(size.width) == "number" and size.width <= 1 and size.width > 0 then
     result.width = math.floor(vim.o.columns * size.width)
   elseif type(size.width) == "function" then
-    result.width = size.width(vim.o.columns)
+    local width = size.width(vim.o.columns)
+    if type(width) == "number" then
+      result.width = width
+    end
   end
 
   if type(size.height) == "number" and size.height <= 1 and size.height > 0 then
     result.height = math.floor(vim.o.lines * size.height)
   elseif type(size.height) == "function" then
-    result.height = size.height(vim.o.lines)
+    local height = size.height(vim.o.lines)
+    if type(height) == "number" then
+      result.height = height
+    end
   end
 
   return result
