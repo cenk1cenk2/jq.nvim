@@ -116,42 +116,42 @@ function M.attach_autoclose(renderer)
 end
 
 ---Attaches resize event to the renderer.
+---@param group string
 ---@param renderer any
----@param size jq.ConfigUiSize
----@return number
-function M.attach_resize(renderer, size)
-  local id = vim.api.nvim_create_autocmd({ "VimResized" }, {
+---@param ui table
+function M.attach_resize(group, renderer, ui)
+  vim.api.nvim_create_autocmd({ "VimResized" }, {
+    group = vim.api.nvim_create_augroup(group, { clear = true }),
     desc = "Resizes to UI on resizing the window.",
     callback = function()
-      renderer:set_size(M.renderer_calculate_size(size))
+      renderer:schedule(function()
+        renderer:set_size(M.calculate_ui(ui))
+      end)
     end,
   })
-
-  return id
 end
 
 ---Calculate the size of the UI.
----@param size jq.ConfigUiSize
----@return jq.ConfigUiSize
-function M.renderer_calculate_size(size)
-  ---@type jq.ConfigUiSize
-  local result = {}
+---@param ui table
+---@return table
+function M.calculate_ui(ui)
+  local result = vim.deepcopy(ui)
 
-  if type(size.width) == "number" and size.width <= 1 and size.width > 0 then
-    result.width = math.floor(vim.o.columns * size.width)
-  elseif type(size.width) == "function" then
-    result.width = size.width(vim.o.columns)
+  if type(ui.width) == "number" and ui.width <= 1 and ui.width > 0 then
+    result.width = math.floor(vim.o.columns * ui.width)
+  elseif type(ui.width) == "function" then
+    result.width = ui.width(vim.o.columns)
     if type(result.width) == "number" and result.width <= 1 and result.width > 0 then
-      result.width = M.renderer_calculate_size(result).width
+      result.width = M.calculate_ui(result).width
     end
   end
 
-  if type(size.height) == "number" and size.height <= 1 and size.height > 0 then
-    result.height = math.floor(vim.o.lines * size.height)
-  elseif type(size.height) == "function" then
-    result.height = size.height(vim.o.lines)
+  if type(ui.height) == "number" and ui.height <= 1 and ui.height > 0 then
+    result.height = math.floor(vim.o.lines * ui.height)
+  elseif type(ui.height) == "function" then
+    result.height = ui.height(vim.o.lines)
     if type(result.height) == "number" and result.height <= 1 and result.height > 0 then
-      result.height = M.renderer_calculate_size(result).height
+      result.height = M.calculate_ui(result).height
     end
   end
 

@@ -27,10 +27,12 @@ function M.run(opts)
     return
   end
 
-  local renderer = n.create_renderer(vim.tbl_deep_extend("force", {}, c.ui, utils.renderer_calculate_size(c.ui), {
+  local ui = vim.tbl_deep_extend("force", {}, utils.calculate_ui(c.ui), {
     position = "50%",
     relative = "editor",
-  }))
+  })
+  local renderer = n.create_renderer(ui)
+  local augroup = "jq_run"
 
   renderer:add_mappings({
     {
@@ -42,10 +44,10 @@ function M.run(opts)
     },
   })
 
-  local resize = utils.attach_resize(renderer, c.ui)
-
   renderer:on_mount(function()
     M._.renderer = renderer
+
+    utils.attach_resize(augroup, renderer, ui)
 
     if c.ui.autoclose then
       utils.attach_autoclose(renderer)
@@ -55,7 +57,7 @@ function M.run(opts)
   renderer:on_unmount(function()
     M._.renderer = nil
 
-    pcall(vim.api.nvim_del_autocmd, resize)
+    pcall(vim.api.nvim_del_augroup_by_name, augroup)
   end)
 
   local bufnr = vim.api.nvim_get_current_buf()
