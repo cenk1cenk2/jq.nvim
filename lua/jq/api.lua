@@ -88,6 +88,7 @@ function M.run(opts)
       }),
       n.tree({
         flex = 1,
+        id = "command",
         border_label = "Command",
         border_style = c.ui.border,
         selected = signal.command,
@@ -96,6 +97,12 @@ function M.run(opts)
           signal.command = node
         end,
         prepare_node = function(node, line, component)
+          if signal.command:get_value().command == node.command then
+            line:append("✔", "String")
+          else
+            line:append("◻", "Comment")
+          end
+          line:append(" ")
           line:append(node.command)
 
           return line
@@ -103,6 +110,7 @@ function M.run(opts)
       }),
       n.text_input({
         flex = 6,
+        id = "arguments",
         border_label = "Arguments",
         border_style = c.ui.border,
         autofocus = false,
@@ -119,6 +127,7 @@ function M.run(opts)
       })
     ),
     n.text_input({
+      id = "query",
       border_label = "Query",
       border_style = c.ui.border,
       autofocus = true,
@@ -226,10 +235,12 @@ function M.run(opts)
         autofocus = false,
         border_style = c.ui.border,
         on_press = function()
-          signal.commands = defaults.commands
           signal.command = defaults.command
+          renderer:get_component_by_id("command"):set_current_value(defaults.command)
           signal.arguments = defaults.arguments
+          utils.set_component_buffer_content(renderer:get_component_by_id("arguments"), defaults.arguments)
           signal.query = defaults.query
+          utils.set_component_buffer_content(renderer:get_component_by_id("query"), defaults.query)
         end,
       }),
       n.gap(1),
