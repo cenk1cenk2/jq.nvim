@@ -9,9 +9,9 @@ Run `jq` and variants like `yq` or `gojq` in an interactive window in Neovim and
 - Copy the output of the process.
 - Ability to write the output of `jq` back to a file.
 
-![demo](./media/swappy-20240914_152053.png)
+![demo](./media/swappy-20240914_193809.png)
 
-![demo](./media/swappy-20240914_152118.png)
+![demo](./media/swappy-20240914_193824.png)
 
 ## Installation
 
@@ -38,7 +38,7 @@ Run `jq` and variants like `yq` or `gojq` in an interactive window in Neovim and
 Plugin requires no setup by default. However if you want to change the default settings for good, then you can call it.
 
 ```lua
-require("jq").setup({})
+require("jq").setup()
 ```
 
 You can find the default configuration file and available options [here](https://github.com/cenk1cenk2/jq.nvim/blob/main/lua/jq/config.lua).
