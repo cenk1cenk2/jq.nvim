@@ -12,7 +12,7 @@ local utils = require("jq.utils")
 ---@field arguments? string
 ---@field query? string
 
----@type fun(opts: jq.RunOpts): nil
+---@type fun(opts?: jq.RunOpts): nil
 function M.run(opts)
   opts = opts or {}
 
