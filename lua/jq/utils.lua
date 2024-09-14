@@ -24,8 +24,10 @@ function M.set_component_value(component, value)
     end
 
     component:set_current_value(value)
-    local lines = component:get_lines()
-    vim.api.nvim_buf_set_lines(component.bufnr, 0, -1, true, lines)
+    if type(component.get_lines) == "function" then
+      local lines = component:get_lines()
+      vim.api.nvim_buf_set_lines(component.bufnr, 0, -1, true, lines)
+    end
     component:redraw()
   end)
 
