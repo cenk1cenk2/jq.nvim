@@ -131,7 +131,7 @@ function M.renderer_calculate_size(size)
   if type(size.height) == "number" and size.height <= 1 and size.height > 0 then
     result.height = math.floor(vim.o.lines * size.height)
   elseif type(size.height) == "function" then
-    result.height = size.height(vim.o.rows)
+    result.height = size.height(vim.o.lines)
   end
 
   return result

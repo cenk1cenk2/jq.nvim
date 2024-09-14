@@ -18,7 +18,7 @@ local M = {}
 
 ---@class jq.ConfigUiSize
 ---@field width? number | fun(columns: number): number
----@field height? number | fun(lines: number): number
+---@field height? number | fun(rows: number): number
 
 ---@class jq.ConfigUIKeymap
 ---@field close? string
