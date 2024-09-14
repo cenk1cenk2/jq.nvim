@@ -234,7 +234,7 @@ function M.run(opts)
 
           local lines = utils.get_component_buffer_content(component)
 
-          local fd, fd_open_err = vim.uv.fs_open(path, "w+", 660)
+          local fd, fd_open_err = vim.uv.fs_open(path, "w", 660)
 
           if not fd or fd_open_err then
             log.error("Failed to open file: %s", fd_open_err)
