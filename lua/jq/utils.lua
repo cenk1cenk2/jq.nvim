@@ -7,7 +7,7 @@ local M = {}
 function M.create_buffer(scratch, modifiable)
   local bufnr = vim.api.nvim_create_buf(false, scratch)
 
-  vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = bufnr })
+  -- vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = bufnr })
   vim.api.nvim_set_option_value("modifiable", modifiable, { buf = bufnr })
 
   return bufnr
