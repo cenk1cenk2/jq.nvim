@@ -54,7 +54,7 @@ end
 
 ---
 ---@param component any
----@param content string | string[]
+---@param content string | string[] | nil
 ---@return any
 function M.set_component_buffer_content(component, content)
   if component.bufnr == nil then
