@@ -187,7 +187,7 @@ function M.run(opts)
       n.gap(1),
       n.button({
         label = "Yank <C-y>",
-        global_press_key = "<C-b>",
+        global_press_key = "<C-y>",
         autofocus = false,
         border_style = c.ui.border,
         on_press = function()
