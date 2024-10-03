@@ -87,6 +87,17 @@ function M.run(opts)
     M._.signal = signal
   elseif opts.toggle and M._.signal ~= nil then
     signal = M._.signal
+
+    if opts.commands then
+      signal.commands = opts.commands
+      signal.command = signal.commands[1]
+    end
+    if opts.arguments then
+      signal.arguments = opts.arguments
+    end
+    if opts.query then
+      signal.query = opts.query
+    end
   end
 
   local body = n.rows(
