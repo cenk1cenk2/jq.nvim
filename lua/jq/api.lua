@@ -90,7 +90,7 @@ function M.run(opts)
 
     if opts.commands then
       signal.commands = opts.commands
-      signal.command = signal.commands[1]
+      signal.command = opts.commands[1]
     end
     if opts.arguments then
       signal.arguments = opts.arguments
