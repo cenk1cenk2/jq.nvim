@@ -89,14 +89,14 @@ function M.run(opts)
     signal = M._.signal
 
     if opts.commands then
-      signal.commands = opts.commands
-      signal.command = opts.commands[1]
+      M._.signal.commands = defaults.commands
+      M._.signal.command = defaults.command
     end
     if opts.arguments then
-      signal.arguments = opts.arguments
+      M._.signal.arguments = defaults.arguments
     end
     if opts.query then
-      signal.query = opts.query
+      M._.signal.query = defaults.query
     end
   end
 
