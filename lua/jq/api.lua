@@ -222,13 +222,12 @@ function M.run(opts)
         autofocus = false,
         border_style = c.ui.border,
         on_press = function()
-          local component = renderer:get_component_by_id("save")
-
-          if component == nil then
+          local save = renderer:get_component_by_id("save")
+          if save == nil then
             return
           end
 
-          local filename = component:get_current_value()
+          local filename = save:get_current_value()
           if not filename or filename == "" then
             log.error("No file path provided.")
 
@@ -257,7 +256,12 @@ function M.run(opts)
             path = p
           end
 
-          local lines = utils.get_component_buffer_content(component)
+          local results = renderer:get_component_by_id("results")
+          if results == nil then
+            return
+          end
+
+          local lines = utils.get_component_buffer_content(results) or {}
 
           local fd, fd_open_err = vim.uv.fs_open(path, "w", 660)
 
