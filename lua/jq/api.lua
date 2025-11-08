@@ -13,6 +13,7 @@ local utils = require("jq.utils")
 ---@field query? string
 ---@field filename? string
 ---@field lines? string[]
+---@field clipboard? boolean
 
 ---@type fun(opts?: jq.RunOpts): nil
 function M.run(opts)
@@ -61,8 +62,22 @@ function M.run(opts)
   end)
 
   local bufnr = vim.api.nvim_get_current_buf()
-  local lines = opts.lines or vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-  local filename = opts.filename or utils.get_project_buffer_filepath(bufnr)
+  local lines = opt.lines
+  local filename = opt.filename
+
+  if not opts.lines and opts.clipboard then
+    local cb = vim.fn.getreg(vim.v.register or "")
+
+    lines = vim.split(cb, "\n", { plain = true })
+  elseif not opts.lines then
+    lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  end
+
+  if not opts.filename and opts.clipboard then
+    filename = "cb"
+  elseif not opts.filename then
+    filename = vim.api.nvim_buf_get_name(bufnr)
+  end
 
   ---@type jq.ConfigCommand[]
   local commands = opts.commands or c.commands
