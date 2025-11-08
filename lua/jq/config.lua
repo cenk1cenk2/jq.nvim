@@ -41,15 +41,15 @@ local defaults = {
     autoclose = true,
     border = "single",
     width = function(columns)
-      if columns < 120 then
-        return math.floor(columns * 0.95)
+      if columns < 180 then
+        return math.floor(columns * 0.9)
       end
 
       return 180
     end,
     height = function(lines)
-      if lines < 36 then
-        return math.floor(lines * 0.95)
+      if lines < 64 then
+        return math.floor(lines * 0.9)
       end
 
       return 64
