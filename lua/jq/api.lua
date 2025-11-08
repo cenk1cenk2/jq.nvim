@@ -62,8 +62,8 @@ function M.run(opts)
   end)
 
   local bufnr = vim.api.nvim_get_current_buf()
-  local lines = opt.lines
-  local filename = opt.filename
+  local lines = opts.lines
+  local filename = opts.filename
 
   if not opts.lines and opts.clipboard then
     local cb = vim.fn.getreg(vim.v.register or "")
