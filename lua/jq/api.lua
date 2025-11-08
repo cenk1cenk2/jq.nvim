@@ -159,6 +159,7 @@ function M.run(opts)
       autoresize = false,
       size = 1,
       max_lines = 1,
+      filetype = "jq",
       value = signal.query,
       placeholder = "query...",
       on_change = function(value)

@@ -35,7 +35,7 @@ local defaults = {
   debounce = 25,
   commands = {
     { command = "jq", filetype = "json" },
-    { command = "yq", filetype = "json" },
+    { command = "yq", filetype = "yaml" },
   },
   ui = {
     autoclose = true,
@@ -45,14 +45,14 @@ local defaults = {
         return math.floor(columns * 0.95)
       end
 
-      return 120
+      return 180
     end,
     height = function(lines)
       if lines < 36 then
         return math.floor(lines * 0.95)
       end
 
-      return 36
+      return 64
     end,
     keymap = {
       close = "<C-q>",
