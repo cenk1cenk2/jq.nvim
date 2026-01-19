@@ -361,4 +361,21 @@ function M.run(opts)
   renderer:render(body)
 end
 
+---@type fun(opts?: jq.RunOpts): nil
+function M.run_visual(opts)
+  local start_line = vim.fn.line("'<")
+  local end_line = vim.fn.line("'>")
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  local lines = vim.api.nvim_buf_get_lines(bufnr, start_line - 1, end_line, false)
+
+  local filename = vim.api.nvim_buf_get_name(bufnr)
+  opts = opts or {}
+
+  M.run(vim.tbl_extend("force", {
+    filename = filename,
+    lines = lines
+  }, opts))
+end
+
 return M
